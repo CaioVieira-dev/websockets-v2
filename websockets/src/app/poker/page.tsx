@@ -1,3 +1,6 @@
+import React from "react";
+import { Button } from "../_components/button";
+
 export default function Poker() {
   return (
     <div className="min-w-screen min-h-screen bg-gradient-to-r from-indigo-500 via-cyan-300 to-indigo-500">
@@ -27,14 +30,12 @@ function Card() {
 }
 
 function Options() {
-  const buttonClasses =
-    "rounded bg-green-400 px-4 py-2 text-white transition-colors hover:bg-green-600";
   return (
     <section className="flex justify-evenly gap-4 py-4">
-      <button className={buttonClasses}>Remover jogadores</button>
-      <button className={buttonClasses}>Configurar cartas</button>
-      <button className={buttonClasses}>Limpar cartas</button>
-      <button className={buttonClasses}>Virar cartas</button>
+      <Button>Remover jogadores</Button>
+      <Button>Configurar cartas</Button>
+      <Button>Limpar cartas</Button>
+      <Button>Virar cartas</Button>
     </section>
   );
 }
