@@ -33,6 +33,8 @@ export default function Poker() {
     [],
   );
 
+  const removePlayers = useCallback(() => setPlayers([]), []);
+
   return (
     <div className="min-w-screen min-h-screen bg-gradient-to-r from-indigo-500 via-cyan-300 to-indigo-500">
       <div className="container mx-auto flex min-h-screen flex-col px-4 py-2">
@@ -45,7 +47,7 @@ export default function Poker() {
           <Card symbol="13" onClick={setPlayerCard(1)} />
           <Card symbol="21" onClick={setPlayerCard(1)} />
         </section>
-        <Options />
+        <Options removePlayers={removePlayers} />
         <Board players={players} />
       </div>
     </div>
