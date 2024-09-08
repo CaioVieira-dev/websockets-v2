@@ -1,22 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Card } from "./card";
 
-export function Board() {
-  const [players, setPlayers] = useState([
-    {
-      name: "Caio",
-      card: "21",
-      id: 1,
-    },
-    {
-      name: "Testerson",
-      card: "13",
-      id: 2,
-    },
-  ]);
+type BoardProps = {
+  players: {
+    name: string;
+    card: string;
+    id: number;
+  }[];
+};
 
+export function Board({ players }: BoardProps) {
   return (
     <section className="flex w-full grow flex-col gap-2 rounded-3xl bg-gradient-to-r from-green-200 via-green-100 to-green-200 px-4 py-2">
       <Line className="flex items-center justify-between border-b-2 border-green-300 px-4 py-2">
