@@ -7,8 +7,8 @@ export function Board() {
         <h5 className="text-4xl">Jogador</h5>
         <h5 className="text-4xl">Pontuação:</h5>
       </Line>
-      <Player name="Caio" />
-      <Player name="Testerson" />
+      <Player name="Caio" card="21" />
+      <Player name="Testerson" card="13" />
     </section>
   );
 }
@@ -30,13 +30,14 @@ function Line({ children, className }: lineProps) {
 
 type PlayerProps = {
   name: string;
+  card: string;
 };
 
-function Player({ name }: PlayerProps) {
+function Player({ name, card }: PlayerProps) {
   return (
     <Line>
       <p className="text-4xl">{name}</p>
-      <Card mini />
+      <Card mini symbol={card} />
     </Line>
   );
 }
