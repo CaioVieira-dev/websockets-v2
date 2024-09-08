@@ -9,7 +9,7 @@ export function Board() {
       </div>
       <div className="flex items-center justify-between px-4 py-2">
         <p className="text-4xl">Caio</p>
-        <Card />
+        <Card mini />
       </div>
     </section>
   );
