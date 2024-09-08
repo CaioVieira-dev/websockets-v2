@@ -8,9 +8,10 @@ type BoardProps = {
     card?: string;
     id: number;
   }[];
+  cardIsShown: boolean;
 };
 
-export function Board({ players }: BoardProps) {
+export function Board({ players, cardIsShown }: BoardProps) {
   return (
     <section className="flex w-full grow flex-col gap-2 rounded-3xl bg-gradient-to-r from-green-200 via-green-100 to-green-200 px-4 py-2">
       <Line className="flex items-center justify-between border-b-2 border-green-300 px-4 py-2">
@@ -18,7 +19,7 @@ export function Board({ players }: BoardProps) {
         <h5 className="text-4xl">Pontuação:</h5>
       </Line>
       {players.map(({ card, id, name }) => (
-        <Player card={card} name={name} key={id} />
+        <Player card={card} name={name} key={id} cardIsShown={cardIsShown} />
       ))}
     </section>
   );
@@ -42,13 +43,14 @@ function Line({ children, className }: lineProps) {
 type PlayerProps = {
   name: string;
   card?: string;
+  cardIsShown: boolean;
 };
 
-function Player({ name, card }: PlayerProps) {
+function Player({ name, card, cardIsShown }: PlayerProps) {
   return (
     <Line>
       <p className="text-4xl">{name}</p>
-      <>{card && <Card mini symbol={card} />}</>
+      <>{card && <Card mini symbol={card} cardIsShown={cardIsShown} />}</>
     </Line>
   );
 }

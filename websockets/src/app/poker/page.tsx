@@ -24,6 +24,7 @@ export default function Poker() {
       id: 2,
     },
   ]);
+  const [cardIsShown, setCardIsShown] = useState(true);
 
   const setPlayerCard = useCallback(
     (id: number) => (newCard: string) =>
@@ -45,6 +46,10 @@ export default function Poker() {
     () => setPlayers((prev) => prev.map(({ card, ...player }) => player)),
     [],
   );
+  const toggleCardIsShown = useCallback(
+    () => setCardIsShown((prev) => !prev),
+    [],
+  );
 
   return (
     <div className="min-w-screen min-h-screen bg-gradient-to-r from-indigo-500 via-cyan-300 to-indigo-500">
@@ -58,8 +63,13 @@ export default function Poker() {
           <Card symbol="13" onClick={setPlayerCard(1)} />
           <Card symbol="21" onClick={setPlayerCard(1)} />
         </section>
-        <Options clearBoard={clearBoard} removePlayers={removePlayers} />
-        <Board players={players} />
+        <Options
+          clearBoard={clearBoard}
+          removePlayers={removePlayers}
+          cardIsShown={cardIsShown}
+          toggleCardIsShown={toggleCardIsShown}
+        />
+        <Board players={players} cardIsShown={cardIsShown} />
       </div>
     </div>
   );
