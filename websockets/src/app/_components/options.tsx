@@ -1,4 +1,5 @@
 import { Button } from "./button";
+import { NewCardsDialog } from "./newCardsDialog";
 
 type OptionsProps = {
   clearBoard: () => void;
@@ -18,13 +19,7 @@ export function Options({
   return (
     <section className="flex justify-evenly gap-4 py-4">
       <Button onClick={removePlayers}>Remover jogadores</Button>
-      <Button
-        onClick={() =>
-          changeCards(["🤡", "☕", "1", "2", "3", "5", "8", "13", "21"])
-        }
-      >
-        Configurar cartas
-      </Button>
+      <NewCardsDialog changeCards={changeCards} />
       <Button onClick={clearBoard}>Limpar cartas</Button>
       <Button onClick={toggleCardIsShown}>
         {cardIsShown ? "Esconder cartas" : "Virar cartas"}
