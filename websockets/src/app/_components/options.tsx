@@ -5,6 +5,7 @@ type OptionsProps = {
   removePlayers: () => void;
   cardIsShown: boolean;
   toggleCardIsShown: () => void;
+  changeCards: (newSymbols: string[]) => void;
 };
 
 export function Options({
@@ -12,11 +13,18 @@ export function Options({
   clearBoard,
   cardIsShown,
   toggleCardIsShown,
+  changeCards,
 }: OptionsProps) {
   return (
     <section className="flex justify-evenly gap-4 py-4">
       <Button onClick={removePlayers}>Remover jogadores</Button>
-      <Button>Configurar cartas</Button>
+      <Button
+        onClick={() =>
+          changeCards(["🤡", "☕", "1", "2", "3", "5", "8", "13", "21"])
+        }
+      >
+        Configurar cartas
+      </Button>
       <Button onClick={clearBoard}>Limpar cartas</Button>
       <Button onClick={toggleCardIsShown}>
         {cardIsShown ? "Esconder cartas" : "Virar cartas"}

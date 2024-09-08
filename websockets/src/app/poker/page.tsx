@@ -25,6 +25,15 @@ export default function Poker() {
     },
   ]);
   const [cardIsShown, setCardIsShown] = useState(true);
+  const [possibleCards, setPossibleCards] = useState([
+    "1",
+    "2",
+    "3",
+    "5",
+    "8",
+    "13",
+    "21",
+  ]);
 
   const setPlayerCard = useCallback(
     (id: number) => (newCard: string) =>
@@ -50,24 +59,29 @@ export default function Poker() {
     () => setCardIsShown((prev) => !prev),
     [],
   );
+  const changeCards = useCallback(
+    (newSymbols: string[]) => setPossibleCards(newSymbols),
+    [],
+  );
 
   return (
     <div className="min-w-screen min-h-screen bg-gradient-to-r from-indigo-500 via-cyan-300 to-indigo-500">
       <div className="container mx-auto flex min-h-screen flex-col px-4 py-2">
         <section className="flex w-full flex-wrap justify-center gap-4 py-4">
-          <Card symbol="1" onClick={setPlayerCard(1)} />
-          <Card symbol="2" onClick={setPlayerCard(1)} />
-          <Card symbol="3" onClick={setPlayerCard(1)} />
-          <Card symbol="5" onClick={setPlayerCard(1)} />
-          <Card symbol="8" onClick={setPlayerCard(1)} />
-          <Card symbol="13" onClick={setPlayerCard(1)} />
-          <Card symbol="21" onClick={setPlayerCard(1)} />
+          {possibleCards.map((symbol, i) => (
+            <Card
+              symbol={symbol}
+              onClick={setPlayerCard(1)}
+              key={`card-${i}`}
+            />
+          ))}
         </section>
         <Options
           clearBoard={clearBoard}
           removePlayers={removePlayers}
           cardIsShown={cardIsShown}
           toggleCardIsShown={toggleCardIsShown}
+          changeCards={changeCards}
         />
         <Board players={players} cardIsShown={cardIsShown} />
       </div>
