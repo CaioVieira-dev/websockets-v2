@@ -5,8 +5,14 @@ import { Options } from "../_components/options";
 import { Card } from "../_components/card";
 import { Board } from "../_components/board";
 
+type playerType = {
+  name: string;
+  card?: string;
+  id: number;
+};
+
 export default function Poker() {
-  const [players, setPlayers] = useState([
+  const [players, setPlayers] = useState<playerType[]>([
     {
       name: "Caio",
       card: "21",
@@ -34,6 +40,11 @@ export default function Poker() {
   );
 
   const removePlayers = useCallback(() => setPlayers([]), []);
+  const clearBoard = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    () => setPlayers((prev) => prev.map(({ card, ...player }) => player)),
+    [],
+  );
 
   return (
     <div className="min-w-screen min-h-screen bg-gradient-to-r from-indigo-500 via-cyan-300 to-indigo-500">
@@ -47,7 +58,7 @@ export default function Poker() {
           <Card symbol="13" onClick={setPlayerCard(1)} />
           <Card symbol="21" onClick={setPlayerCard(1)} />
         </section>
-        <Options removePlayers={removePlayers} />
+        <Options clearBoard={clearBoard} removePlayers={removePlayers} />
         <Board players={players} />
       </div>
     </div>

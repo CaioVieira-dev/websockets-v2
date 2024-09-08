@@ -5,7 +5,7 @@ import { Card } from "./card";
 type BoardProps = {
   players: {
     name: string;
-    card: string;
+    card?: string;
     id: number;
   }[];
 };
@@ -41,14 +41,14 @@ function Line({ children, className }: lineProps) {
 
 type PlayerProps = {
   name: string;
-  card: string;
+  card?: string;
 };
 
 function Player({ name, card }: PlayerProps) {
   return (
     <Line>
       <p className="text-4xl">{name}</p>
-      <Card mini symbol={card} />
+      <>{card && <Card mini symbol={card} />}</>
     </Line>
   );
 }
