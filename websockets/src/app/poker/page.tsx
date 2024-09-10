@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
 import { Options } from "../_components/options";
 import { Card } from "../_components/card";
 import { Board } from "../_components/board";
+import { useCallback, useState } from "react";
+import { api as clientApi } from "~/trpc/react";
 
 type playerType = {
   name: string;
@@ -12,6 +13,19 @@ type playerType = {
 };
 
 export default function Poker() {
+  const [cardIsShown] = clientApi.poker.getCardIsShown.useSuspenseQuery();
+
+  const utils = clientApi.useUtils();
+  const toggleOnServer = clientApi.poker.toggleCardIsShown.useMutation({
+    onSuccess: async () => {
+      await utils.poker.invalidate();
+    },
+  });
+
+  const toggleCardIsShown = useCallback(async () => {
+    toggleOnServer.mutate();
+  }, [toggleOnServer]);
+
   const [players, setPlayers] = useState<playerType[]>([
     {
       name: "Caio",
@@ -24,7 +38,7 @@ export default function Poker() {
       id: 2,
     },
   ]);
-  const [cardIsShown, setCardIsShown] = useState(true);
+
   const [possibleCards, setPossibleCards] = useState([
     "1",
     "2",
@@ -55,10 +69,7 @@ export default function Poker() {
     () => setPlayers((prev) => prev.map(({ card, ...player }) => player)),
     [],
   );
-  const toggleCardIsShown = useCallback(
-    () => setCardIsShown((prev) => !prev),
-    [],
-  );
+
   const changeCards = useCallback(
     (newSymbols: string[]) => setPossibleCards(newSymbols),
     [],
