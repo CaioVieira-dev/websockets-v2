@@ -14,11 +14,17 @@ type playerType = {
 
 export default function Poker() {
   const [cardIsShown] = clientApi.poker.getCardIsShown.useSuspenseQuery();
+  const [possibleCards] = clientApi.poker.getPossibleCards.useSuspenseQuery();
 
   const utils = clientApi.useUtils();
   const toggleOnServer = clientApi.poker.toggleCardIsShown.useMutation({
     onSuccess: async () => {
-      await utils.poker.invalidate();
+      await utils.poker.getCardIsShown.invalidate();
+    },
+  });
+  const changeCardsOnServer = clientApi.poker.setPossibleCards.useMutation({
+    onSuccess: async () => {
+      await utils.poker.getPossibleCards.invalidate();
     },
   });
 
@@ -37,16 +43,6 @@ export default function Poker() {
       card: "13",
       id: 2,
     },
-  ]);
-
-  const [possibleCards, setPossibleCards] = useState([
-    "1",
-    "2",
-    "3",
-    "5",
-    "8",
-    "13",
-    "21",
   ]);
 
   const setPlayerCard = useCallback(
@@ -71,8 +67,9 @@ export default function Poker() {
   );
 
   const changeCards = useCallback(
-    (newSymbols: string[]) => setPossibleCards(newSymbols),
-    [],
+    (newSymbols: string[]) =>
+      changeCardsOnServer.mutate({ newPossibleCards: newSymbols }),
+    [changeCardsOnServer],
   );
 
   return (
