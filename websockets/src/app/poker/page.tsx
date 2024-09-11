@@ -3,18 +3,13 @@
 import { Options } from "../_components/options";
 import { Card } from "../_components/card";
 import { Board } from "../_components/board";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { api as clientApi } from "~/trpc/react";
-
-type playerType = {
-  name: string;
-  card?: string;
-  id: number;
-};
 
 export default function Poker() {
   const [cardIsShown] = clientApi.poker.getCardIsShown.useSuspenseQuery();
   const [possibleCards] = clientApi.poker.getPossibleCards.useSuspenseQuery();
+  const [players] = clientApi.poker.getPlayers.useSuspenseQuery();
 
   const utils = clientApi.useUtils();
   const toggleOnServer = clientApi.poker.toggleCardIsShown.useMutation({
@@ -28,42 +23,45 @@ export default function Poker() {
     },
   });
 
+  const setPlayersOnServer = clientApi.poker.setPlayers.useMutation({
+    onSuccess: async () => {
+      await utils.poker.getPlayers.invalidate();
+    },
+  });
+
   const toggleCardIsShown = useCallback(async () => {
     toggleOnServer.mutate();
   }, [toggleOnServer]);
 
-  const [players, setPlayers] = useState<playerType[]>([
-    {
-      name: "Caio",
-      card: "21",
-      id: 1,
-    },
-    {
-      name: "Testerson",
-      card: "13",
-      id: 2,
-    },
-  ]);
-
   const setPlayerCard = useCallback(
     (id: number) => (newCard: string) =>
-      setPlayers((prev) =>
-        prev.map((player) => {
+      setPlayersOnServer.mutate({
+        newPlayers: players.map((player) => {
           if (player.id === id) {
             return { ...player, card: newCard };
           }
 
           return player;
         }),
-      ),
-    [],
+      }),
+    [players, setPlayersOnServer],
   );
 
-  const removePlayers = useCallback(() => setPlayers([]), []);
+  const removePlayers = useCallback(
+    () =>
+      setPlayersOnServer.mutate({
+        newPlayers: [],
+      }),
+    [setPlayersOnServer],
+  );
+
   const clearBoard = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    () => setPlayers((prev) => prev.map(({ card, ...player }) => player)),
-    [],
+    () =>
+      setPlayersOnServer.mutate({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        newPlayers: players.map(({ card, ...player }) => player),
+      }),
+    [players, setPlayersOnServer],
   );
 
   const changeCards = useCallback(
