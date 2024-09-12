@@ -11,7 +11,7 @@ type BoardProps = {
   cardIsShown: boolean;
 };
 
-export function Board({ players, cardIsShown }: BoardProps) {
+export default function Board({ players, cardIsShown }: BoardProps) {
   return (
     <section className="flex w-full grow flex-col gap-2 rounded-3xl bg-gradient-to-r from-green-200 via-green-100 to-green-200 px-4 py-2">
       <Line className="flex items-center justify-between border-b-2 border-green-300 px-4 py-2">

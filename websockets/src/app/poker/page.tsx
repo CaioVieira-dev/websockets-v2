@@ -1,8 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Options } from "../_components/options";
 import { Card } from "../_components/card";
-import { Board } from "../_components/board";
+const Board = dynamic(() => import("../_components/board"), { ssr: false });
 import { useCallback } from "react";
 import { api as clientApi } from "~/trpc/react";
 
