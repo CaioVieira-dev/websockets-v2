@@ -14,7 +14,6 @@ export default function EnterPokerRoom() {
   const enterOrCreateRoomOnServer = clientApi.poker.getOrCreateRoom.useMutation(
     {
       onSuccess: (room) => {
-        console.log("r: ", room);
         setRoomPath(`/poker/${room}`);
       },
     },
