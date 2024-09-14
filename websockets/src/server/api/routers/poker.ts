@@ -132,4 +132,40 @@ export const pokerRouter = createTRPCRouter({
 
       return room.players;
     }),
+
+  //TODO: rever esse nome de função
+  getOrCreateRoom: publicProcedure
+    .input(z.object({ room: z.string().optional(), name: z.string().min(1) }))
+    .mutation(({ input }) => {
+      const roomId =
+        (input?.room === ""
+          ? String(Object.keys(rooms).length + 1)
+          : input.room) ?? "1";
+
+      const room = rooms[roomId];
+
+      if (!room) {
+        rooms[roomId] = {
+          players: [
+            {
+              name: input.name,
+              id: 1,
+            },
+          ],
+          possibleCards: [...possibleCards],
+          cardIsShown,
+        };
+
+        return roomId;
+      }
+
+      if (!room.players.some(({ name }) => name === input.name)) {
+        room.players.push({
+          id: room.players.length + 1,
+          name: input.name,
+        });
+      }
+
+      return roomId;
+    }),
 });
